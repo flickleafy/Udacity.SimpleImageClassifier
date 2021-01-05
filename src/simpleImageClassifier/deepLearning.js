@@ -1,9 +1,6 @@
 const deepLearning = {}
 
 const mobilenet = require('@tensorflow-models/mobilenet');
-
-const imageLoader = require('../helpers/imageLoader')
-const tensorHelper = require('../helpers/tensorHelper')
 let model
 
 deepLearning.initialize = async () =>
