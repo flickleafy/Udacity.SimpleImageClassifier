@@ -1,0 +1,32 @@
+{
+  "name": "udacity.simpleimageclassifier",
+  "version": "1.0.0",
+  "description": "Simple example of deep learning, image classification",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eerbano/Udacity.SimpleImageClassifier.git"
+  },
+  "keywords": [
+    "machine",
+    "learning"
+  ],
+  "author": "Enzo Erbano",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/eerbano/Udacity.SimpleImageClassifier/issues"
+  },
+  "homepage": "https://github.com/eerbano/Udacity.SimpleImageClassifier#readme",
+  "dependencies": {
+    "@tensorflow-models/mobilenet": "^2.0.4",
+    "@tensorflow/tfjs": "^2.7.0",
+    "@tensorflow/tfjs-node-gpu": "^2.7.0",
+    "get-image-data": "^5.0.0",
+    "jimp": "^0.16.1",
+    "sharp": "^0.27.0"
+  }
+}
