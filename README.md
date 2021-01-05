@@ -1,1 +1,1 @@
-# Udacity.ImageClassifier
+# Udacity.SimpleImageClassifier
