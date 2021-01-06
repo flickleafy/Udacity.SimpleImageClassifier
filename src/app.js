@@ -3,7 +3,7 @@ const simpleImageClassifier = require('./simpleImageClassifier/deepLearning')
 const imagePreprocessing = require('./simpleImageClassifier/imagePreprocessing')
 const directoryHelper = require('./helpers/directoryHelper')
 
-directoryHelper.listing("./res/").then(async (files) =>
+directoryHelper.listing("./res/testData").then(async (files) =>
 {
     await simpleImageClassifier.initialize()
     if (files)
@@ -17,13 +17,16 @@ directoryHelper.listing("./res/").then(async (files) =>
             //Predict in what class our photo is
             const predictions = await simpleImageClassifier.predict(tensor)
 
-            console.log("The predictions of the photo ", file.name, " are: ")
-            for (let index = 0; index < predictions.length; index++)
+            if (predictions)
             {
-                const prediction = predictions[index];
-                console.log("class: ", prediction.className, "\nprobability: ", prediction.probability)
+                console.log("The predictions of the photo ", file.name, " are: ")
+                for (let index = 0; index < predictions.length; index++)
+                {
+                    const prediction = predictions[index];
+                    console.log("class: ", prediction.className, "\nprobability: ", prediction.probability)
+                }
+                console.log("\n")
             }
-            console.log("\n")
         }
     }
 })

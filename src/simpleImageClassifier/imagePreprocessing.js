@@ -1,8 +1,8 @@
-imagePreprocessing = {}
 const imageLoader = require('../helpers/imageLoader')
 const tensorHelper = require('../helpers/tensorHelper')
-const imageHelper = require("../image/imageHelper")
+const imageHelper = require("../helpers/imageHelper")
 
+const imagePreprocessing = {}
 imagePreprocessing.imageTensor = async (imagePath) =>
 {
     // Load local image from our resources
@@ -14,7 +14,7 @@ imagePreprocessing.imageTensor = async (imagePath) =>
     return tensor3d
 }
 
-imagePreprocessing.colorAveraging = (imagePath) =>
+imagePreprocessing.colorAveraging = async (imagePath) =>
 {
     // Load local image from our resources
     const image = await imageLoader.getImage(imagePath)
