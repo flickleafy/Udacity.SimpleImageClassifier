@@ -2,16 +2,19 @@ const mobilenet = require('@tensorflow-models/mobilenet');
 const directoryHelper = require('../helpers/directoryHelper')
 const tensorHelper = require('../helpers/tensorHelper')
 let model
+let metadata
 let custom = 0
+let trainedModelPath = "./res/trainedModel"
 
-const deepLearning = {}
-deepLearning.initialize = async () =>
+const machineLearning = {}
+machineLearning.initialize = async () =>
 {
-    let customModel = await directoryHelper.listing("./res/trainedModel")
+    let customModel = await directoryHelper.listing(trainedModelPath)
     customModel = customModel.find((item) => { if (item.name === "model.json") { return item } })
     if (customModel)
     {   // Load custom model
-        model = await tensorHelper.loadModel("./res/trainedModel/model.json")
+        model = await tensorHelper.loadModel(trainedModelPath + "/model.json")
+        metadata = await directoryHelper.loadJSON(trainedModelPath + "/metadata.json")
         custom = 1
     }
     else
@@ -20,7 +23,7 @@ deepLearning.initialize = async () =>
     }
 }
 
-deepLearning.predict = async (tensor) =>
+machineLearning.classify = async (tensor) =>
 {
     let predictions
     // Classify our tensor
@@ -28,11 +31,10 @@ deepLearning.predict = async (tensor) =>
     {
         try
         {
-            tensor = tensorHelper.expandDimension(tensor)
-            predictions = await model.predict(tensor);
+            predictions = await tensorHelper.customClassification(tensor, model, metadata.labels)
         } catch (error)
         {
-            console.log(error)
+            console.error(error)
         }
     }
     else 
@@ -43,5 +45,5 @@ deepLearning.predict = async (tensor) =>
     return predictions
 }
 
-module.exports = deepLearning
+module.exports = machineLearning
 

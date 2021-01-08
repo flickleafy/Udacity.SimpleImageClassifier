@@ -24,8 +24,7 @@
   "dependencies": {
     "@tensorflow-models/mobilenet": "^2.0.4",
     "@tensorflow/tfjs": "^2.7.0",
-    "@tensorflow/tfjs-node-gpu": "^2.7.0",
-    "get-image-data": "^5.0.0",
+    "@tensorflow/tfjs-node-gpu": "^2.8.2",
     "jimp": "^0.16.1",
     "sharp": "^0.27.0"
   }

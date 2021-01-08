@@ -1,5 +1,5 @@
-// Simple example of deep learning, image classification
-const simpleImageClassifier = require('./simpleImageClassifier/deepLearning')
+// Simple example of machine learning, image classification
+const simpleImageClassifier = require('./simpleImageClassifier/machineLearning')
 const imagePreprocessing = require('./simpleImageClassifier/imagePreprocessing')
 const directoryHelper = require('./helpers/directoryHelper')
 
@@ -12,10 +12,10 @@ directoryHelper.listing("./res/testData").then(async (files) =>
         {
             const file = files[index];
 
-            const tensor = await imagePreprocessing.imageTensor(file.path + file.name)
+            const tensor = await imagePreprocessing.imageToTensor3D(file.path + file.name)
 
             //Predict in what class our photo is
-            const predictions = await simpleImageClassifier.predict(tensor)
+            const predictions = await simpleImageClassifier.classify(tensor)
 
             if (predictions)
             {
@@ -23,7 +23,8 @@ directoryHelper.listing("./res/testData").then(async (files) =>
                 for (let index = 0; index < predictions.length; index++)
                 {
                     const prediction = predictions[index];
-                    console.log("class: ", prediction.className, "\nprobability: ", prediction.probability)
+                    console.log("class: ", prediction.className,
+                        "\nprobability: ", prediction.probability)
                 }
                 console.log("\n")
             }

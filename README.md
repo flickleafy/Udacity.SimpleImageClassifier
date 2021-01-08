@@ -1,2 +1,2 @@
 # Udacity.SimpleImageClassifier
-Simple example of deep learning, image classification
+Simple example of machine learning, image classification

@@ -36,4 +36,18 @@ directoryHelper.URLtoFilePath = (url) =>
     return filePath
 }
 
+directoryHelper.loadJSON = async (filePath) =>
+{
+    let data = null, json = null
+    try
+    {
+        data = await fs.readFileSync(filePath);
+        json = JSON.parse(data);
+    } catch (error)
+    {
+        console.error(error)
+    }
+    return json
+}
+
 module.exports = directoryHelper

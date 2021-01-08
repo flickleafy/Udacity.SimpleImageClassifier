@@ -3,7 +3,7 @@ const tensorHelper = require('../helpers/tensorHelper')
 const imageHelper = require("../helpers/imageHelper")
 
 const imagePreprocessing = {}
-imagePreprocessing.imageTensor = async (imagePath) =>
+imagePreprocessing.imageToTensor3D = async (imagePath) =>
 {
     // Load local image from our resources
     const image = await imageLoader.getImage(imagePath)
