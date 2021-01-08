@@ -1,6 +1,5 @@
 const tensorflow = require('@tensorflow/tfjs')// Load the binding (CPU computation)
 require('@tensorflow/tfjs-node-gpu');
-// const directoryHelper = require('../helpers/directoryHelper')
 const IMAGE_SIZE = 224;
 
 const tensorHelper = {}
@@ -31,9 +30,7 @@ tensorHelper.loadModel = async (relativePathModel) =>
         model = await tensorflow.loadLayersModel("file://" + relativePathModel)
         model.summary()
     } catch (error)
-    {
-        console.error(error)
-    }
+    { console.error(error) }
     return model
 }
 
@@ -46,9 +43,7 @@ tensorHelper.saveModel = async (createdModel, filePath) =>
         model = await tensorflow.model(createdModel)
         await model.save(url.href)
     } catch (error)
-    {
-        console.error(error)
-    }
+    { console.error(error) }
 }
 
 tensorHelper.expandDimension = (tensor) =>
@@ -111,21 +106,6 @@ tensorHelper.getTop3Classes = async (labels, logits) =>
     return topClassesAndProbs;
 }
 
-tensorHelper.customClassification = async (tensor3d, model, labels) =>
-{
-    const normalizedTensor = tensorHelper.normalizeAndReshapeImgTensor(tensor3d)
 
-    const logits = model.predict(normalizedTensor);
-    // try
-    // {
-    //     // Remove the very first logit (background noise).
-    //     logits = logits.slice([0, 1], [-1, 1000]);
-    // } catch (error)
-    // {
-    //     console.error(error)
-    // }
-    const predictions = await tensorHelper.getTop3Classes(labels, logits);
-    return predictions
-}
 
 module.exports = tensorHelper

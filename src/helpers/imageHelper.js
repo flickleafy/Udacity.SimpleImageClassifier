@@ -1,4 +1,6 @@
-const averagePixelColorRGB = (imageData) =>
+imageHelper = {}
+
+imageHelper.averagePixelColorRGB = (imageData) =>
 {
     const red = 0, green = 1, blue = 2
     const numPixels = imageData.bitmap.width * imageData.bitmap.height;
@@ -24,51 +26,51 @@ const averagePixelColorRGB = (imageData) =>
     return averageColor
 }
 
-const pixelColorRGBToHSLfp = (pixelRGB) =>
+imageHelper.pixelColorRGBToHSLfp = (pixelRGB) =>
 {
     let pixelHSL = { h: 0, s: 0, l: 0 }
     if (pixelRGB)
     {
         // make r, g, and b fractions of 1
-        let r = pixelRGB.r / 255,
-            g = pixelRGB.g / 255,
-            b = pixelRGB.b / 255,
+        let red = pixelRGB.r / 255,
+            green = pixelRGB.g / 255,
+            blue = pixelRGB.b / 255,
 
             // find greatest and smallest channel values
-            cmin = Math.min(r, g, b),
-            cmax = Math.max(r, g, b),
-            delta = cmax - cmin,
-            h = 0,
-            s = 0,
-            l = 0;
+            channelMin = Math.min(red, green, blue),
+            channelMax = Math.max(red, green, blue),
+            delta = channelMax - channelMin,
+            hue = 0,
+            saturation = 0,
+            lightness = 0;
 
         // calculate hue
         // no difference
         if (delta == 0)
-        { h = 0; }
+        { hue = 0; }
         // red is max
-        else if (cmax == r)
-        { h = ((g - b) / delta) % 6; }
+        else if (channelMax == red)
+        { hue = ((green - blue) / delta) % 6; }
         // green is max
-        else if (cmax == g)
-        { h = (b - r) / delta + 2; }
+        else if (channelMax == green)
+        { hue = (blue - red) / delta + 2; }
         // blue is max
         else
-        { h = (r - g) / delta + 4; }
+        { hue = (red - green) / delta + 4; }
 
-        h = Math.round(h * 60);
+        hue = Math.round(hue * 60);
 
         // make negative hues positive behind 360°
-        if (h < 0)
-        { h += 360; }
-        h = h / 360
+        if (hue < 0)
+        { hue += 360; }
+        hue = hue / 360
         // calculate lightness
-        l = (cmax + cmin) / 2;
+        lightness = (channelMax + channelMin) / 2;
 
         // calculate saturation
-        s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+        saturation = delta == 0 ? 0 : delta / (1 - Math.abs(2 * lightness - 1));
 
-        pixelHSL.h = h, pixelHSL.s = s, pixelHSL.l = l
+        pixelHSL.h = hue, pixelHSL.s = saturation, pixelHSL.l = lightness
         return pixelHSL
     } else
     {
@@ -76,4 +78,4 @@ const pixelColorRGBToHSLfp = (pixelRGB) =>
     }
 }
 
-module.exports = { averagePixelColorRGB, pixelColorRGBToHSLfp }
+module.exports = imageHelper

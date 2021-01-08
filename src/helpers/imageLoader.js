@@ -1,9 +1,17 @@
 const jimp = require('jimp')
 
-const getImage = async (filePath) =>
+imageLoader = {}
+
+imageLoader.getImage = async (filePath) =>
 {
-    let imageData = await jimp.read(filePath)
+    let imageData = null
+    try
+    {
+        imageData = await jimp.read(filePath)
+    } catch (error)
+    { console.error(error) }
+
     return imageData
 }
 
-module.exports = { getImage }
+module.exports = imageLoader

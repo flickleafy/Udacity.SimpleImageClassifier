@@ -1,10 +1,10 @@
 const mobilenet = require('@tensorflow-models/mobilenet');
 const directoryHelper = require('../helpers/directoryHelper')
 const tensorHelper = require('../helpers/tensorHelper')
-let model
-let metadata
-let custom = 0
 let trainedModelPath = "./res/trainedModel"
+let metadata
+let model
+let custom = 0
 
 const machineLearning = {}
 machineLearning.initialize = async () =>
@@ -23,25 +23,41 @@ machineLearning.initialize = async () =>
     }
 }
 
-machineLearning.classify = async (tensor) =>
+machineLearning.classify = async (image) =>
 {
+    // Convert image to a tensor
+    const tensor3d = tensorHelper.imageTo3dTensor(image)
+
     let predictions
     // Classify our tensor
     if (custom)
     {
         try
         {
-            predictions = await tensorHelper.customClassification(tensor, model, metadata.labels)
+            predictions = await machineLearning.customClassification(tensor3d, model, metadata.labels)
         } catch (error)
-        {
-            console.error(error)
-        }
+        { console.error(error) }
     }
     else 
     {
-        predictions = await model.classify(tensor);
+        predictions = await model.classify(tensor3d);
     }
 
+    return predictions
+}
+
+machineLearning.customClassification = async (tensor3d, model, labels) =>
+{
+    const normalizedTensor = tensorHelper.normalizeAndReshapeImgTensor(tensor3d)
+
+    const logits = model.predict(normalizedTensor);
+    // try
+    // {
+    //     // Remove the very first logit (background noise).
+    //     logits = logits.slice([0, 1], [-1, 2]);
+    // } catch (error)
+    // { console.error(error) }
+    const predictions = await tensorHelper.getTop3Classes(labels, logits);
     return predictions
 }
 

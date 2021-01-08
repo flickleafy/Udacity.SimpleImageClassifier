@@ -44,9 +44,7 @@ directoryHelper.loadJSON = async (filePath) =>
         data = await fs.readFileSync(filePath);
         json = JSON.parse(data);
     } catch (error)
-    {
-        console.error(error)
-    }
+    { console.error(error) }
     return json
 }
 
