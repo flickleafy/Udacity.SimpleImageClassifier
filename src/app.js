@@ -22,6 +22,7 @@ directoryHelper.listing(pathTestData).then(async (files) =>
 
             // Preprocess image, cropping
             const preprocessed = await imageHelper.cropSquare(image, fileObject)
+            //await imageHelper.whiteFill(image, "annotatedData")
 
             // Predict in what class our photo is
             const predictions = await simpleImageClassifier.classify(preprocessed)

@@ -3,12 +3,12 @@ require('@tensorflow/tfjs-node-gpu');
 const IMAGE_SIZE = 224;
 
 const tensorHelper = {}
-tensorHelper.imageTo3dTensor = (imageData) =>
+tensorHelper.imageTo3dTensor = (image) =>
 {
     const numChannels = 3;
-    const numPixels = imageData.bitmap.width * imageData.bitmap.height;
+    const numPixels = image.bitmap.width * image.bitmap.height;
     const values = new Int32Array(numPixels * numChannels);
-    pixels = pixels = imageData.bitmap.data
+    pixels = pixels = image.bitmap.data
 
     for (let i = 0; i < numPixels; i++)
     {
@@ -17,7 +17,7 @@ tensorHelper.imageTo3dTensor = (imageData) =>
             values[i * numChannels + channel] = pixels[i * 4 + channel];
         }
     }
-    const outShape = [imageData.bitmap.height, imageData.bitmap.width, numChannels];
+    const outShape = [image.bitmap.height, image.bitmap.width, numChannels];
     const tensor3d = tensorflow.tensor3d(values, outShape, 'int32');
     return tensor3d
 }

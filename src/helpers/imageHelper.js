@@ -118,5 +118,19 @@ imageHelper.cropSquare = async (image, fileObject) =>
     return processed
 }
 
+imageHelper.whiteFill = async (image, annotatedData) =>
+{
+    await image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (xAxis, yAxis, pixelIndex)
+    {
+        if (annotatedData[xAxis][yAxis] === true)
+        {
+            // white pixel
+            this.bitmap.data[pixelIndex + 0] = 255; //red
+            this.bitmap.data[pixelIndex + 1] = 255; //green
+            this.bitmap.data[pixelIndex + 2] = 255; //blue
+            //this.bitmap.data[pixelIndex + 3]; // alpha
+        }
+    });
+}
 
 module.exports = imageHelper
