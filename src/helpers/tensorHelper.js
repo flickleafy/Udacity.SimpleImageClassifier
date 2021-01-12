@@ -22,26 +22,25 @@ tensorHelper.imageTo3dTensor = (imageData) =>
     return tensor3d
 }
 
-tensorHelper.loadModel = async (relativePathModel) =>
+tensorHelper.loadModel = async (pathTrainedModel) =>
 {
     let model = null
     try
     {
-        model = await tensorflow.loadLayersModel("file://" + relativePathModel)
+        model = await tensorflow.loadLayersModel("file://" + pathTrainedModel)
         model.summary()
     } catch (error)
     { console.error(error) }
     return model
 }
 
-tensorHelper.saveModel = async (createdModel, filePath) =>
+tensorHelper.saveModel = async (createdModel, pathTrainedModel) =>
 {
-    // const url = directoryHelper.filePathToURL(filePath)
     let model = null
     try
     {
         model = await tensorflow.model(createdModel)
-        await model.save(url.href)
+        await model.save("file://" + pathTrainedModel)
     } catch (error)
     { console.error(error) }
 }
@@ -106,6 +105,19 @@ tensorHelper.getTop3Classes = async (labels, logits) =>
     return topClassesAndProbs;
 }
 
+tensorHelper.customClassification = async (tensor3d, model, labels) =>
+{
+    const normalizedTensor = tensorHelper.normalizeAndReshapeImgTensor(tensor3d)
 
+    const logits = model.predict(normalizedTensor);
+    // try
+    // {
+    //     // Remove the very first logit (background noise).
+    //     logits = logits.slice([0, 1], [-1, 2]);
+    // } catch (error)
+    // { console.error(error) }
+    const predictions = await tensorHelper.getTop3Classes(labels, logits);
+    return predictions
+}
 
 module.exports = tensorHelper

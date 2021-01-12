@@ -1,6 +1,7 @@
 const path = require('path');
 const url = require('url')
 const fs = require('fs');
+const jimp = require('jimp')
 
 const directoryHelper = {}
 
@@ -46,6 +47,18 @@ directoryHelper.loadJSON = async (filePath) =>
     } catch (error)
     { console.error(error) }
     return json
+}
+
+directoryHelper.getImage = async (filePath) =>
+{
+    let image = null
+    try
+    {
+        image = await jimp.read(filePath)
+    } catch (error)
+    { console.error(error) }
+
+    return image
 }
 
 module.exports = directoryHelper

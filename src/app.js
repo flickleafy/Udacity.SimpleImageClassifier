@@ -1,11 +1,16 @@
 // Simple example of machine learning, image classification
-const simpleImageClassifier = require('./simpleImageClassifier/machineLearning')
-const imageLoader = require('./helpers/imageLoader')
-const directoryHelper = require('./helpers/directoryHelper')
 
-directoryHelper.listing("./res/testData").then(async (files) =>
+const simpleImageClassifier = require('./simpleImageClassifier/machineLearning')
+const directoryHelper = require('./helpers/directoryHelper')
+const imageHelper = require('./helpers/imageHelper')
+
+const pathTestData = "./res/testData"
+const pathTrainData = "./res/trainData"
+const pathTrainedModel = "./res/trainedModel"
+
+directoryHelper.listing(pathTestData).then(async (files) =>
 {
-    await simpleImageClassifier.initialize()
+    await simpleImageClassifier.initialize(pathTrainData, pathTrainedModel)
     if (files)
     {
         for (let index = 0; index < files.length; index++)
@@ -13,10 +18,13 @@ directoryHelper.listing("./res/testData").then(async (files) =>
             const fileObject = files[index];
 
             // Load local image from our resources
-            const image = await imageLoader.getImage(fileObject.path + fileObject.name)
+            const image = await directoryHelper.getImage(fileObject.path + fileObject.name)
 
-            //Predict in what class our photo is
-            const predictions = await simpleImageClassifier.classify(image)
+            // Preprocess image, cropping
+            const preprocessed = await imageHelper.cropSquare(image, fileObject)
+
+            // Predict in what class our photo is
+            const predictions = await simpleImageClassifier.classify(preprocessed)
 
             if (predictions)
             {

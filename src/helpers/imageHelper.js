@@ -1,11 +1,11 @@
 imageHelper = {}
 
-imageHelper.averagePixelColorRGB = (imageData) =>
+imageHelper.averagePixelColorRGB = (image) =>
 {
     const red = 0, green = 1, blue = 2
-    const numPixels = imageData.bitmap.width * imageData.bitmap.height;
+    const numPixels = image.bitmap.width * image.bitmap.height;
     let averageColor = { r: 0, g: 0, b: 0 }
-    pixels = imageData.bitmap.data
+    pixels = image.bitmap.data
     //initialize with first pixel
     averageColor.r = pixels[red]
     averageColor.g = pixels[green]
@@ -77,5 +77,46 @@ imageHelper.pixelColorRGBToHSLfp = (pixelRGB) =>
         return -1;
     }
 }
+
+imageHelper.imageColorAveragingHSL = async (image) =>
+{
+    // Get average pixel color of whole image
+    const pixelColorRGB = imageHelper.averagePixelColorRGB(image)
+
+    // Convert to the format used in our model
+    const pixelColorHSL = imageHelper.pixelColorRGBToHSLfp(pixelColorRGB)
+
+    return pixelColorHSL
+}
+
+imageHelper.cropSquare = async (image, fileObject) =>
+{
+    const height = image.bitmap.height,
+        width = image.bitmap.width,
+        isWidthLarge = (width > height) ? 1 : 0
+    let processed = null, difference, xAxisStart = 0, yAxisStart = 0, newWidth, newHeight
+
+    if (isWidthLarge)
+    {
+        difference = width - height
+        xAxisStart = Math.ceil(difference / 2)
+        newWidth = newHeight = height
+    } else
+    {
+        difference = height - width
+        yAxisStart = Math.ceil(difference / 2)
+        newWidth = newHeight = width
+    }
+
+    try
+    {
+        processed = await image.crop(xAxisStart, yAxisStart, newWidth, newHeight)
+        await processed.writeAsync(fileObject.path + "\\cropped\\" + fileObject.name);
+    } catch (error)
+    { console.error(error) }
+
+    return processed
+}
+
 
 module.exports = imageHelper
