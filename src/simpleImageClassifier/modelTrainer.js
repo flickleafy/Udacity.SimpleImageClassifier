@@ -78,4 +78,86 @@ const preprocessImages = async (images) =>
     return preprocessedImages
 }
 
+directoryHelper.listing(pathTrainData).then(async (files) =>
+{
+    if (files)
+    {
+        for (let index = 0; index < files.length; index++)
+        {
+            const subdir = files[index];
+
+            if (!subdir.name.includes("."))
+            {
+                await processSubdir(subdir.path + subdir.name)
+            }
+        }
+    }
+
+})
+
+async function processSubdir(subdirClassTrainData)
+{
+
+    const getCurrentImageMaskPath = (imageName) =>
+    {
+        const fileID = getNumber(imageName)
+        const fileObject = maskFiles.find((file) =>
+        {
+            if (file.name.includes(fileID))
+            {
+                return file
+            }
+        })
+        return (fileObject.path + fileObject.name)
+    }
+    const getNumber = (string) =>
+    {
+        let regex = string.match(/\d+/)
+        let number = parseInt(regex ? regex[0] : null)
+        return number
+    }
+
+    let files = await directoryHelper.listing(subdirClassTrainData)
+    files = directoryHelper.removeDirectoriesFromListing(files)
+    let maskFiles = []
+
+    // split masks and files in two arrays
+    for (let index = 0; index < files.length; index++)
+    {
+        const fileObject = files[index];
+        if (fileObject.name.includes("mask")) 
+        {
+            maskFiles.push(fileObject)
+            files.splice(index, 1);
+            index--
+        }
+    }
+
+    if (files.length === maskFiles.length)
+    {
+        // whiteFill
+        for (let index = 0; index < files.length; index++)
+        {
+            const fileObject = files[index]
+            // Load local image from train data
+            const image = await directoryHelper.getImage(fileObject.path + fileObject.name)
+            // Load local image mask from train data
+            const imageMask = await directoryHelper.getImage(getCurrentImageMaskPath(fileObject.name))
+            // White fill, and store in directory
+            await imageHelper.whiteFill(image, imageMask, fileObject)
+        }
+
+        // crop square around marks
+        // for (let index = 0; index < files.length; index++)
+        // {
+        //     const fileObject = files[index]
+
+        // }
+    }
+
+    fileObject
+}
+
+
+
 module.exports = modelTrainer

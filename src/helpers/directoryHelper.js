@@ -56,9 +56,26 @@ directoryHelper.getImage = async (filePath) =>
     {
         image = await jimp.read(filePath)
     } catch (error)
-    { console.error(error) }
+    { console.error(error, "\n", filePath) }
 
     return image
+}
+
+directoryHelper.removeDirectoriesFromListing = (files) =>
+{
+    if (files)
+    {
+        for (let index = 0; index < files.length; index++)
+        {
+            const fileObject = files[index]
+            if (!fileObject.name.includes("."))
+            {
+                files.splice(index, 1)
+                index--
+            }
+        }
+    }
+    return files
 }
 
 module.exports = directoryHelper

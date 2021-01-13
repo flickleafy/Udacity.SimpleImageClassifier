@@ -1,3 +1,5 @@
+const jimp = require('jimp')
+
 imageHelper = {}
 
 imageHelper.averagePixelColorRGB = (image) =>
@@ -118,19 +120,59 @@ imageHelper.cropSquare = async (image, fileObject) =>
     return processed
 }
 
-imageHelper.whiteFill = async (image, annotatedData) =>
+imageHelper.cropSquareMark = async (image, fileObject) =>
 {
-    await image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (xAxis, yAxis, pixelIndex)
+    let yAxisUpper = 0, yAxisBottom = 0, xAxisLeft = 0, yAxisRight = 0
+    if (image)
     {
-        if (annotatedData[xAxis][yAxis] === true)
+        await image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (xAxis, yAxis, pixelIndex)
         {
-            // white pixel
-            this.bitmap.data[pixelIndex + 0] = 255; //red
-            this.bitmap.data[pixelIndex + 1] = 255; //green
-            this.bitmap.data[pixelIndex + 2] = 255; //blue
-            //this.bitmap.data[pixelIndex + 3]; // alpha
-        }
-    });
+            const pixelColor = imageMask.bitmap.data[pixelIndex + 0] + imageMask.bitmap.data[pixelIndex + 1] + imageMask.bitmap.data[pixelIndex + 2]
+
+            if (pixelColor < 760)
+            {
+                yAxisUpper = yAxis
+                xAxisLeft = xAxis
+            }
+            else
+            {
+                if (yAxisUpper > 0)
+                {
+                    yAxisBottom = yAxis
+                }
+                if (xAxisLeft > 0)
+                {
+                    yAxisRight = xAxis
+                }
+            }
+        });
+
+        //await image.writeAsync(fileObject.path + "\\cropped-mark\\" + fileObject.name);
+    }
+    return processed
+}
+
+imageHelper.whiteFill = async (image, imageMask, fileObject) =>
+{
+    if (image && imageMask)
+    {
+        await image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (xAxis, yAxis, pixelIndex)
+        {
+            const pixelColorMask = imageMask.bitmap.data[pixelIndex + 0] + imageMask.bitmap.data[pixelIndex + 1] + imageMask.bitmap.data[pixelIndex + 2]
+            //imageMask.getPixelColor(xAxis, yAxis)
+
+            if (pixelColorMask <= 100)
+            {
+                // white pixel
+                this.bitmap.data[pixelIndex + 0] = 255; //red
+                this.bitmap.data[pixelIndex + 1] = 255; //green
+                this.bitmap.data[pixelIndex + 2] = 255; //blue
+                //this.bitmap.data[pixelIndex + 3]; // alpha
+            }
+        });
+
+        await image.writeAsync(fileObject.path + "\\filled\\" + fileObject.name);
+    }
 }
 
 module.exports = imageHelper

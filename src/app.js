@@ -8,9 +8,13 @@ const pathTestData = "./res/testData"
 const pathTrainData = "./res/trainData"
 const pathTrainedModel = "./res/trainedModel"
 
+
 directoryHelper.listing(pathTestData).then(async (files) =>
 {
     await simpleImageClassifier.initialize(pathTrainData, pathTrainedModel)
+
+    directoryHelper.removeDirectoriesFromListing(files)
+
     if (files)
     {
         for (let index = 0; index < files.length; index++)
@@ -20,23 +24,30 @@ directoryHelper.listing(pathTestData).then(async (files) =>
             // Load local image from our resources
             const image = await directoryHelper.getImage(fileObject.path + fileObject.name)
 
-            // Preprocess image, cropping
-            const preprocessed = await imageHelper.cropSquare(image, fileObject)
-            //await imageHelper.whiteFill(image, "annotatedData")
-
-            // Predict in what class our photo is
-            const predictions = await simpleImageClassifier.classify(preprocessed)
-
-            if (predictions)
+            if (image) 
             {
-                console.log("The predictions of the photo ", fileObject.name, " are: ")
-                for (let index = 0; index < predictions.length; index++)
+                // Preprocess image, cropping
+                const preprocessed = await imageHelper.cropSquare(image, fileObject)
+
+                // Predict in what class our photo is
+                const predictions = await simpleImageClassifier.classify(preprocessed)
+
+                if (predictions)
                 {
-                    const prediction = predictions[index];
-                    console.log("class: ", prediction.className,
-                        "\nprobability: ", prediction.probability)
+                    console.log("The predictions of the photo ", fileObject.name, " are: ")
+                    for (let index = 0; index < predictions.length; index++)
+                    {
+                        const prediction = predictions[index];
+                        console.log("class: ", prediction.className,
+                            "\nprobability: ", prediction.probability)
+                    }
+                    console.log("\n")
                 }
-                console.log("\n")
+            }
+            else
+            {
+                console.error("image not loaded");
+
             }
         }
     }
