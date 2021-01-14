@@ -7,19 +7,21 @@ let model
 
 const modelTrainer = {}
 
-modelTrainer.initialize = (pathTrainData, pathTrainedModel) =>
+modelTrainer.initialize = async (pathTrainData, pathTrainedModel) =>
 {
     // List directory structure
     const files = await directoryListing(pathTrainData)
 
+    await processDirectory(files)
+
     // Create metadata from directory structure
-    metadata = await createMetadata(files)
+    // metadata = await createMetadata(files)
 
     // Load images to array
-    const images = await loadTrainData(files)
+    // const images = await loadTrainData(files)
 
     // Preprocess images
-    const preprocessedImages = await preprocessImages(images)
+    // const preprocessedImages = await preprocessImages(images)
 
     // Convert samples to tensor
 
@@ -37,8 +39,19 @@ const directoryListing = async (pathTrainData) =>
 
 const createMetadata = async (files) =>
 {
-
-
+    let classes = []
+    if (files)
+    {
+        for (let index = 0; index < files.length; index++)
+        {
+            const subdir = files[index]
+            if (!subdir.name.includes("."))
+            {
+                classes.push(subdir.name)
+            }
+        }
+    }
+    return classes
 }
 
 const loadTrainData = async (files) =>
@@ -78,24 +91,22 @@ const preprocessImages = async (images) =>
     return preprocessedImages
 }
 
-directoryHelper.listing(pathTrainData).then(async (files) =>
+async function processDirectory(files)
 {
     if (files)
     {
         for (let index = 0; index < files.length; index++)
         {
-            const subdir = files[index];
-
+            const subdir = files[index]
             if (!subdir.name.includes("."))
             {
-                await processSubdir(subdir.path + subdir.name)
+                await processSubdirectory(subdir.path + subdir.name)
             }
         }
     }
+}
 
-})
-
-async function processSubdir(subdirClassTrainData)
+async function processSubdirectory(subdirClassTrainData)
 {
 
     const getCurrentImageMaskPath = (imageName) =>
@@ -148,14 +159,15 @@ async function processSubdir(subdirClassTrainData)
         }
 
         // crop square around marks
-        // for (let index = 0; index < files.length; index++)
-        // {
-        //     const fileObject = files[index]
-
-        // }
+        for (let index = 0; index < files.length; index++)
+        {
+            const fileObject = files[index]
+            // Load local image from train data
+            const image = await directoryHelper.getImage(fileObject.path + "\\filled\\" + fileObject.name)
+            // 
+            await imageHelper.cropSquareAroundMark(image, fileObject)
+        }
     }
-
-    fileObject
 }
 
 

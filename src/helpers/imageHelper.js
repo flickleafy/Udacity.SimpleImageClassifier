@@ -120,36 +120,79 @@ imageHelper.cropSquare = async (image, fileObject) =>
     return processed
 }
 
-imageHelper.cropSquareMark = async (image, fileObject) =>
+imageHelper.cropSquareAroundMark = async (image, fileObject) =>
 {
-    let yAxisUpper = 0, yAxisBottom = 0, xAxisLeft = 0, yAxisRight = 0
+    let frameMark = {
+        upperBound: 0,
+        bottomBound: 0,
+        leftBound: 0,
+        rightBound: 0
+    }
+    let xAxisDistance = 0, yAxisDistance = 0, largerSide = 0
+
+
     if (image)
     {
+        const xAxisPivot = image.bitmap.width / 2, yAxisPivot = image.bitmap.height / 2
         await image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (xAxis, yAxis, pixelIndex)
         {
-            const pixelColor = imageMask.bitmap.data[pixelIndex + 0] + imageMask.bitmap.data[pixelIndex + 1] + imageMask.bitmap.data[pixelIndex + 2]
+            const pixelColor = image.bitmap.data[pixelIndex + 0] + image.bitmap.data[pixelIndex + 1] + image.bitmap.data[pixelIndex + 2]
 
-            if (pixelColor < 760)
+            if (pixelColor < 750)
             {
-                yAxisUpper = yAxis
-                xAxisLeft = xAxis
-            }
-            else
-            {
-                if (yAxisUpper > 0)
+                if (xAxis < xAxisPivot)
                 {
-                    yAxisBottom = yAxis
+                    frameMark.leftBound = frameMark.leftBound == 0 ? xAxis : frameMark.leftBound
+                    if (xAxis < frameMark.leftBound) 
+                    {
+                        frameMark.leftBound = (frameMark.leftBound + xAxis) * 0.50
+                    }
                 }
-                if (xAxisLeft > 0)
+                else if (xAxis > xAxisPivot)
                 {
-                    yAxisRight = xAxis
+                    if (xAxis > frameMark.rightBound)
+                    {
+                        frameMark.rightBound = frameMark.rightBound == 0 ? xAxis : frameMark.rightBound
+                        frameMark.rightBound = (frameMark.rightBound + xAxis) * 0.50
+                    }
+                }
+
+                if (yAxis < yAxisPivot)
+                {
+                    frameMark.upperBound = frameMark.upperBound == 0 ? yAxis : frameMark.upperBound
+                    if (yAxis < frameMark.upperBound) 
+                    {
+                        frameMark.upperBound = (frameMark.upperBound + yAxis) * 0.50
+                    }
+                }
+                else if (yAxis > yAxisPivot)
+                {
+                    if (yAxis > frameMark.bottomBound)
+                    {
+                        frameMark.bottomBound = frameMark.bottomBound == 0 ? yAxis : frameMark.bottomBound
+                        frameMark.bottomBound = (frameMark.bottomBound + yAxis) * 0.50
+                    }
                 }
             }
         });
 
-        //await image.writeAsync(fileObject.path + "\\cropped-mark\\" + fileObject.name);
+        frameMark.leftBound = Math.ceil(frameMark.leftBound - 10)
+        frameMark.rightBound = Math.ceil(frameMark.rightBound + 10)
+        frameMark.upperBound = Math.ceil(frameMark.upperBound - 10)
+        frameMark.bottomBound = Math.ceil(frameMark.bottomBound + 10)
+        xAxisDistance = frameMark.rightBound - frameMark.leftBound
+        yAxisDistance = frameMark.bottomBound - frameMark.upperBound
+        largerSide = (xAxisDistance > yAxisDistance) ? xAxisDistance : yAxisDistance
+
+        console.log("Done processing: \n", frameMark)
+        let newImage = await new jimp(largerSide, largerSide, 0xffffffff)
+
+        // center processed image to new image
+
+        await newImage.writeAsync(fileObject.path + "\\cropped-mark\\" + fileObject.name);
+
     }
-    return processed
+    return image
 }
 
 imageHelper.whiteFill = async (image, imageMask, fileObject) =>
@@ -159,7 +202,6 @@ imageHelper.whiteFill = async (image, imageMask, fileObject) =>
         await image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (xAxis, yAxis, pixelIndex)
         {
             const pixelColorMask = imageMask.bitmap.data[pixelIndex + 0] + imageMask.bitmap.data[pixelIndex + 1] + imageMask.bitmap.data[pixelIndex + 2]
-            //imageMask.getPixelColor(xAxis, yAxis)
 
             if (pixelColorMask <= 100)
             {

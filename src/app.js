@@ -1,6 +1,7 @@
 // Simple example of machine learning, image classification
 
 const simpleImageClassifier = require('./simpleImageClassifier/machineLearning')
+const modelTrainer = require('./simpleImageClassifier/modelTrainer')
 const directoryHelper = require('./helpers/directoryHelper')
 const imageHelper = require('./helpers/imageHelper')
 
@@ -8,6 +9,7 @@ const pathTestData = "./res/testData"
 const pathTrainData = "./res/trainData"
 const pathTrainedModel = "./res/trainedModel"
 
+modelTrainer.initialize(pathTrainData, pathTrainedModel)
 
 directoryHelper.listing(pathTestData).then(async (files) =>
 {
