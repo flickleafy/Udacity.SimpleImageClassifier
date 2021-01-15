@@ -81,11 +81,12 @@ const preprocessImages = async (images) =>
         {
             const imageObject = images[index];
 
-            let intermediate
+            let preprocessed
             // Make the image a square
-            intermediate = imageHelper.cropSquare(imageObject)
+            preprocessed = imageHelper.whiteFill(imageObject, imageMaskObject, null)
+            preprocessed = imageHelper.cropSquareAroundMark(preprocessed, null)
 
-            preprocessedImages.push(intermediate)
+            preprocessedImages.push(preprocessed)
         }
     }
     return preprocessedImages
