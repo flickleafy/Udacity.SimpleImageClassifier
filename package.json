@@ -5,6 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node ./src/app.js",
+    "server": "nodemon ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,8 +26,21 @@
     "@tensorflow-models/mobilenet": "^2.0.4",
     "@tensorflow/tfjs": "^2.7.0",
     "@tensorflow/tfjs-node-gpu": "^2.8.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jimp": "^0.16.1",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.11.12",
+    "multer": "^1.4.2",
     "sharp": "^0.27.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "client/"
+    ]
   }
 }

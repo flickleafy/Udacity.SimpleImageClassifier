@@ -106,4 +106,7 @@ dist
 # Project Files
 trainingProject
 trainData
+newData
 cropped
+cropped-mark
+filled

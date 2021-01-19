@@ -1,13 +1,13 @@
 const mobilenet = require('@tensorflow-models/mobilenet');
-const directoryHelper = require('../helpers/directoryHelper')
-const tensorHelper = require('../helpers/tensorHelper')
+const directoryHelper = require('../directoryModule/directoryHelper')
+const tensorHelper = require('../tensorflowModule/tensorHelper')
 
 let metadata
 let model
 let custom = 0
 
-const machineLearning = {}
-machineLearning.initialize = async (pathTrainData, pathTrainedModel) =>
+const simpleImageClassifier = {}
+simpleImageClassifier.initialize = async (pathTrainData, pathTrainedModel) =>
 {
     let customModel = await customModelExist(pathTrainedModel);
     if (customModel)
@@ -20,7 +20,7 @@ machineLearning.initialize = async (pathTrainData, pathTrainedModel) =>
     }
 }
 
-machineLearning.classify = async (image) =>
+simpleImageClassifier.classify = async (image) =>
 {
     // Convert image to a tensor
     const tensor3d = tensorHelper.imageTo3dTensor(image)
@@ -64,7 +64,7 @@ const customClassify = async (tensor3d) =>
     return predictions;
 }
 
-module.exports = machineLearning
+module.exports = simpleImageClassifier
 
 
 

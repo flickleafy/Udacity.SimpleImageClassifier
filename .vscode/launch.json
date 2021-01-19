@@ -5,11 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch with nodemon",
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/src/app.js",
-      "skipFiles": ["<node_internals>/**"]
+      "runtimeExecutable": "nodemon",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/src/app.js"
+      //"restart": true
+
+      // "type": "node",
+      // "request": "launch",
+      // "name": "Launch Program",
+      // "program": "${workspaceFolder}/src/app.js",
+      // "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

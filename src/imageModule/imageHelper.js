@@ -134,11 +134,11 @@ imageHelper.cropSquareAroundMark = async (image, fileObject) =>
     {
         await scanMarkLimits(image, frameMark);
 
-        const newImage = await centeredNewImage(frameMark, image)
+        image = await centerToNewImage(frameMark, image)
 
-        await newImage.writeAsync(fileObject.path + "\\cropped-mark\\" + fileObject.name);
+        await image.writeAsync(fileObject.path + "\\cropped-mark\\" + fileObject.name);
     }
-    return newImage
+    return image
 }
 
 async function scanMarkLimits(image, frameMark)
@@ -193,7 +193,7 @@ async function scanMarkLimits(image, frameMark)
     console.log("Done processing: \n", frameMark)
 }
 
-async function centeredNewImage(frameMark, image)
+async function centerToNewImage(frameMark, image)
 {
     let xAxisDistance = 0, yAxisDistance = 0, largerSide = 0
 
@@ -207,7 +207,7 @@ async function centeredNewImage(frameMark, image)
     let yAxisPosition = (xAxisDistance > yAxisDistance) ? (xAxisDistance - yAxisDistance) / 2 : 0;
 
     let newImage = await new jimp(largerSide, largerSide, 0xffffffff);
-    newImage.blit(image, xAxisPosition, yAxisPosition,
+    await newImage.blit(image, xAxisPosition, yAxisPosition,
         frameMark.leftBound, frameMark.upperBound,
         frameMark.rightBound, frameMark.bottomBound);
 
