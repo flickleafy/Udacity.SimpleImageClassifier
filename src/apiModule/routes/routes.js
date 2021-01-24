@@ -17,7 +17,7 @@ const uploadFolder = multer({
 // apiRouter.delete('/period/:yearMonth', apiService.removeAllTransactionsInPeriod);
 // apiRouter.post('/periods', apiService.findUniquePeriods);
 apiRouter.post('/classifySingleImage', uploadFolder.single('upload'), apiService.classifySingleImage)
-apiRouter.post('/classifyMultipleImages', uploadFolder.array('upload', 10), apiService.classifyMultipleImages)
+apiRouter.post('/classifyMultipleImages', uploadFolder.array('upload', 5), apiService.classifyMultipleImages)
 
 
 

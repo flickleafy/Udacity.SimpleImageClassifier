@@ -1,7 +1,7 @@
 {
   "name": "udacity.simpleimageclassifier",
   "version": "1.0.0",
-  "description": "Simple example of deep learning, image classification",
+  "description": "Simple example of machine learning, image classification",
   "main": "src/app.js",
   "scripts": {
     "start": "node ./src/app.js",
