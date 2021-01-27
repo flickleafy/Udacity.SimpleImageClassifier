@@ -7,15 +7,18 @@ modelClassifier.singleImageClassification = async (fileObject, simpleImageClassi
 {
     let mlObject = null
     //Load local image from our resources
-    const image = await directoryHelper.getImage(fileObject.path + fileObject.name)
+    let image = await directoryHelper.getImage(fileObject.path + fileObject.name)
 
     if (image) 
     {
         // Preprocess image, cropping
-        const preprocessed = await imageHelper.cropSquare(image, fileObject)
+        image = await imageHelper.cropSquare(image, fileObject)
 
         // Predict in what class our photo is
-        const predictions = await simpleImageClassifier.classify(preprocessed)
+        const predictions = await simpleImageClassifier.classify(image)
+
+        // Release memory
+        image = null
 
         mlObject = { fileName: fileObject.originalName, prediction: predictions }
 
@@ -48,15 +51,18 @@ modelClassifier.multipleImageClassification = async (files, simpleImageClassifie
             const fileObject = files[index];
 
             // Load local image from our resources
-            const image = await directoryHelper.getImage(fileObject.path + fileObject.name)
+            let image = await directoryHelper.getImage(fileObject.path + fileObject.name)
 
             if (image) 
             {
                 // Preprocess image, cropping
-                const preprocessed = await imageHelper.cropSquare(image, fileObject)
+                image = await imageHelper.cropSquare(image, fileObject)
 
                 // Predict in what class our photo is
-                const predictions = await simpleImageClassifier.classify(preprocessed)
+                const predictions = await simpleImageClassifier.classify(image)
+
+                // Release memory
+                image = null
 
                 const mlObject = { fileName: fileObject.originalName, prediction: predictions }
                 mlObjectArray.push(mlObject)

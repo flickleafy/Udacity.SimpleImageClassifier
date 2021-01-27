@@ -23,7 +23,7 @@ simpleImageClassifier.initialize = async (pathTrainData, pathTrainedModel) =>
 simpleImageClassifier.classify = async (image) =>
 {
     // Convert image to a tensor
-    const tensor3d = tensorHelper.imageTo3dTensor(image)
+    let tensor3d = tensorHelper.imageTo3dTensor(image)
 
     let predictions
     // Classify our tensor
@@ -31,6 +31,10 @@ simpleImageClassifier.classify = async (image) =>
     { predictions = await customClassify(tensor3d); }
     else
     { predictions = await model.classify(tensor3d); }
+
+    // Release memory
+    tensor3d.dispose()
+    tensor3d = null
 
     return predictions
 }

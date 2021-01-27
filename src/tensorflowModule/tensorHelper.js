@@ -7,8 +7,8 @@ tensorHelper.imageTo3dTensor = (image) =>
 {
     const numChannels = 3;
     const numPixels = image.bitmap.width * image.bitmap.height;
-    const values = new Int32Array(numPixels * numChannels);
-    pixels = pixels = image.bitmap.data
+    let values = new Int32Array(numPixels * numChannels);
+    let pixels = image.bitmap.data
 
     for (let i = 0; i < numPixels; i++)
     {
@@ -19,6 +19,11 @@ tensorHelper.imageTo3dTensor = (image) =>
     }
     const outShape = [image.bitmap.height, image.bitmap.width, numChannels];
     const tensor3d = tensorflow.tensor3d(values, outShape, 'int32');
+
+    // Release memory
+    pixels = null
+    values = null
+
     return tensor3d
 }
 
@@ -55,7 +60,7 @@ tensorHelper.normalizeAndReshapeImgTensor = (tensor3d) =>
     const inputMin = -1, inputMax = 1
     const normalizationConstant = (inputMax - inputMin) / 255.0
     // Normalize the image from [0, 255] to [inputMin, inputMax].
-    const normalized = tensor3d.toFloat().mul(normalizationConstant).add(inputMin);
+    let normalized = tensor3d.toFloat().mul(normalizationConstant).add(inputMin);
 
     // Resize the image to
     let resized = normalized;
@@ -66,6 +71,12 @@ tensorHelper.normalizeAndReshapeImgTensor = (tensor3d) =>
     }
     // Reshape so we can pass it to predict.
     const reshaped = resized.reshape([-1, IMAGE_SIZE, IMAGE_SIZE, 3]);
+
+    // Release memory
+    normalized.dispose()
+    resized.dispose()
+    normalized = null
+    resized = null
 
     return reshaped
 }
@@ -107,9 +118,9 @@ tensorHelper.getTop3Classes = async (labels, logits) =>
 
 tensorHelper.customClassification = async (tensor3d, model, labels) =>
 {
-    const normalizedTensor = tensorHelper.normalizeAndReshapeImgTensor(tensor3d)
+    let normalizedTensor = tensorHelper.normalizeAndReshapeImgTensor(tensor3d)
 
-    const logits = model.predict(normalizedTensor);
+    let logits = model.predict(normalizedTensor);
     // try
     // {
     //     // Remove the very first logit (background noise).
@@ -117,6 +128,13 @@ tensorHelper.customClassification = async (tensor3d, model, labels) =>
     // } catch (error)
     // { console.error(error) }
     const predictions = await tensorHelper.getTop3Classes(labels, logits);
+
+    // Release memory
+    normalizedTensor.dispose()
+    logits.dispose()
+    normalizedTensor = null
+    logits = null
+
     return predictions
 }
 
