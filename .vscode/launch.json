@@ -11,8 +11,8 @@
       "runtimeExecutable": "nodemon",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/src/app.js",
-      "runtimeArgs": ["--max-old-space-size=8192"]
-      //"restart": true
+      "runtimeArgs": ["--max-old-space-size=8192"],
+      "restart": true
 
       // "type": "node",
       // "request": "launch",

@@ -116,6 +116,7 @@ cropped-mark
 filled
 client
 modelTrainer.js
+multithreadsModule
 
 # production
 /build
