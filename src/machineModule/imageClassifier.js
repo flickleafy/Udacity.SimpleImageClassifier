@@ -1,13 +1,13 @@
 const mobilenet = require('@tensorflow-models/mobilenet');
-const directoryHelper = require('../directoryModule/directoryHelper')
-const tensorHelper = require('../tensorflowModule/tensorHelper')
+const storageModule = require('../storageModule/storageInterface')
+const tensorflowModule = require('../tensorflowModule/tensorflowInterface')
 
 let metadata
 let model
 let custom = 0
 
-const simpleImageClassifier = {}
-simpleImageClassifier.initialize = async (pathTrainData, pathTrainedModel) =>
+const imageClassifier = {}
+imageClassifier.initialize = async (pathTrainData, pathTrainedModel) =>
 {
     let customModel = await customModelExist(pathTrainedModel);
     if (customModel)
@@ -20,10 +20,10 @@ simpleImageClassifier.initialize = async (pathTrainData, pathTrainedModel) =>
     }
 }
 
-simpleImageClassifier.classify = async (image) =>
+imageClassifier.classify = async (image) =>
 {
     // Convert image to a tensor
-    let tensor3d = tensorHelper.imageTo3dTensor(image)
+    let tensor3d = tensorflowModule.imageTo3dTensor(image)
 
     let predictions
     // Classify our tensor
@@ -41,7 +41,7 @@ simpleImageClassifier.classify = async (image) =>
 
 const customModelExist = async (pathTrainedModel) =>
 {
-    let customModel = await directoryHelper.listing(pathTrainedModel);
+    let customModel = await storageModule.listing(pathTrainedModel);
     customModel = customModel.find((item) =>
     {
         if (item.name === "model.json")
@@ -52,8 +52,8 @@ const customModelExist = async (pathTrainedModel) =>
 
 const load = async (pathTrainedModel) =>
 {
-    model = await tensorHelper.loadModel(pathTrainedModel + "/model.json");
-    metadata = await directoryHelper.loadJSON(pathTrainedModel + "/metadata.json");
+    model = await tensorflowModule.loadModel(pathTrainedModel + "/model.json");
+    metadata = await storageModule.loadJSON(pathTrainedModel + "/metadata.json");
     custom = 1;
 }
 
@@ -62,13 +62,13 @@ const customClassify = async (tensor3d) =>
     let predictions = null
     try
     {
-        predictions = await tensorHelper.customClassification(tensor3d, model, metadata.labels);
+        predictions = await tensorflowModule.customClassification(tensor3d, model, metadata.labels);
     } catch (error)
     { console.error(error); }
     return predictions;
 }
 
-module.exports = simpleImageClassifier
+module.exports = imageClassifier
 
 
 
