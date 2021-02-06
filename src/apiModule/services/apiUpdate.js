@@ -1,7 +1,7 @@
 const apiModel = require('../model/apiModel');
 const helper = require('./apiHelpers')
 
-apiUpdate = {}
+const apiUpdate = {}
 
 apiUpdate.updateTransactionById = async (req, res) =>
 {
