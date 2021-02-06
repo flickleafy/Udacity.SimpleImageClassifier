@@ -6,9 +6,11 @@ const routes = require('./routes/routes');
 const path = require('path');
 const dotenv = require('dotenv');
 
-const api = {}
+const apiModule = {}
 
-api.initialize = async (tensorflowHandler) =>
+apiModule.initialize = async (machineModuleHandler,
+    poolThreadsModuleHandler,
+    storageModuleHandler) =>
 {
     // Read the file ".env"  
     dotenv.config();
@@ -17,7 +19,9 @@ api.initialize = async (tensorflowHandler) =>
     api.use(cors());
     api.use(express.json());
 
-    api.locals.tensorflowHandler = tensorflowHandler
+    api.locals.machineModuleHandler = machineModuleHandler
+    api.locals.poolThreadsModuleHandler = poolThreadsModuleHandler
+    api.locals.storageModuleHandler = storageModuleHandler
 
     // Attach to React frontend
     api.use(express.static(path.join(__dirname, 'client/build')));
@@ -66,4 +70,4 @@ api.initialize = async (tensorflowHandler) =>
 
 }
 
-module.exports = api
+module.exports = apiModule

@@ -1,15 +1,13 @@
 const apiModel = require('../model/apiModel');
 
-const modelClassifier = require('../../machineModule/modelClassifier')
+const apiMachine = {}
 
-apiMachineLearning = {}
-
-apiMachineLearning.classifySingleImage = async (req, res) =>
+apiMachine.classifySingleImage = async (req, res) =>
 {
     checkFileType(req, res);
-    const simpleImageClassifier = req.app.locals.tensorflowHandler
+    const machineModuleHandler = req.app.locals.machineModuleHandler
     const fileObject = newFileObject(req.file)
-    const mlObject = await modelClassifier.singleImageClassification(fileObject, simpleImageClassifier)
+    const mlObject = await machineModuleHandler.singleImageClassification(fileObject)
 
     if (mlObject.prediction)
     {
@@ -21,12 +19,15 @@ apiMachineLearning.classifySingleImage = async (req, res) =>
     }
 };
 
-apiMachineLearning.classifyMultipleImages = async (req, res) =>
+apiMachine.classifyMultipleImages = async (req, res) =>
 {
     const rejectedFiles = checkFileType(req, res);
-    const simpleImageClassifier = req.app.locals.tensorflowHandler
+    const machineModuleHandler = req.app.locals.machineModuleHandler
+    //const poolThreadsModuleHandler = req.app.locals.poolThreadsModuleHandler
+
     const files = newFilesObjectArray(req.files)
-    const mlObjectArray = await modelClassifier.multipleImageClassification(files, simpleImageClassifier)
+    const mlObjectArray = await machineModuleHandler.multipleImageClassification(files)
+    //const mlObjectArray = await pipelineClassifier.multipleImageClassificationMT(files, poolThreadsModuleHandler)
 
     if (mlObjectArray.length)
     {
@@ -99,7 +100,7 @@ const noPredictionResponse = (res) =>
     res.status(500).send({ message: 'No available predictions' });
 }
 
-module.exports = apiMachineLearning
+module.exports = apiMachine
 
 
 
