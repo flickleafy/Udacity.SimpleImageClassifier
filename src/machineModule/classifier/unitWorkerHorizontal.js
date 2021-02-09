@@ -1,6 +1,6 @@
 
-const storageModule = require('../storageModule/storageInterface')
-const imageModule = require('../imageModule/imageInterface')
+const storageModule = require('../../storageModule/storageInterface')
+const imageModule = require('../../imageModule/imageInterface')
 
 const unitWorkerHorizontal = async (fileObject, machineModule) =>
 {

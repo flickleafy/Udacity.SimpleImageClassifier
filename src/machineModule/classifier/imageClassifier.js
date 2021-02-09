@@ -1,6 +1,6 @@
 const mobilenet = require('@tensorflow-models/mobilenet');
-const storageModule = require('../storageModule/storageInterface')
-const tensorflowModule = require('../tensorflowModule/tensorflowInterface')
+const storageModule = require('../../storageModule/storageInterface')
+const tensorflowModule = require('../../tensorflowModule/tensorflowInterface')
 
 let metadata
 let model
