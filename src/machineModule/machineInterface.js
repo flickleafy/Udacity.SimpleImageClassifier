@@ -1,6 +1,6 @@
-const imageClassifier = require('./imageClassifier')
-const pipelineClassifierHorizontal = require('./pipelineClassifierHorizontal')
-const pipelineClassifierHorizontalMT = require('./pipelineClassifierHorizontalMT')
+const imageClassifier = require('./classifier/imageClassifier')
+const pipelineClassifierHorizontal = require('./classifier/pipelineClassifierHorizontal')
+const pipelineClassifierHorizontalMT = require('./classifier/pipelineClassifierHorizontalMT')
 const storageModule = require('../storageModule/storageInterface')
 const poolThreadsModule = require('../multithreadsModule/poolThreadsModule')
 
