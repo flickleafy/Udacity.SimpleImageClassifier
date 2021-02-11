@@ -114,7 +114,8 @@ colorManipulation.whiteFill = async (image, imageMask, fileObject) =>
             }
         });
 
-        await image.writeAsync(fileObject.path + "\\filled\\" + fileObject.name);
+        if (fileObject)
+        { await image.writeAsync(fileObject.path + "\\filled\\" + fileObject.name); }
     }
     return image
 }

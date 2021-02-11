@@ -25,7 +25,8 @@ imageDimension.cropSquare = async (image, fileObject) =>
 
         image = await image.crop(xAxisStart, yAxisStart, newWidth, newHeight)
 
-        await image.writeAsync(fileObject.path + "\\cropped\\" + fileObject.name);
+        if (fileObject)
+        { await image.writeAsync(fileObject.path + "\\cropped\\" + fileObject.name); }
     }
     return image
 }
@@ -42,7 +43,8 @@ imageDimension.cropSquareAroundMark = async (image, fileObject) =>
 
         image = await centerToNewImage(frameMark, image)
 
-        await image.writeAsync(fileObject.path + "\\cropped-mark\\" + fileObject.name);
+        if (fileObject)
+        { await image.writeAsync(fileObject.path + "\\cropped-mark\\" + fileObject.name); }
     }
     return image
 }
