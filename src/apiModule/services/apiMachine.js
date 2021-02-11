@@ -5,9 +5,9 @@ const apiMachine = {}
 apiMachine.classifySingleImage = async (req, res) =>
 {
     checkFileType(req, res);
-    const machineModuleHandler = req.app.locals.machineModuleHandler
+    const controllerModuleHandler = req.app.locals.controllerModuleHandler
     const fileObject = newFileObject(req.file)
-    const mlObject = await machineModuleHandler.singleImageClassification(fileObject)
+    const mlObject = await controllerModuleHandler.singleImageClassification(fileObject)
 
     if (mlObject.prediction)
     {
@@ -22,12 +22,11 @@ apiMachine.classifySingleImage = async (req, res) =>
 apiMachine.classifyMultipleImages = async (req, res) =>
 {
     const rejectedFiles = checkFileType(req, res);
-    const machineModuleHandler = req.app.locals.machineModuleHandler
-    //const poolThreadsModuleHandler = req.app.locals.poolThreadsModuleHandler
+    const controllerModuleHandler = req.app.locals.controllerModuleHandler
 
     const files = newFilesObjectArray(req.files)
-    const mlObjectArray = await machineModuleHandler.multipleImageClassification(files)
-    //const mlObjectArray = await pipelineClassifier.multipleImageClassificationMT(files, poolThreadsModuleHandler)
+    const mlObjectArray = await controllerModuleHandler.multipleImageClassification(files)
+    //const mlObjectArray = await controllerModuleHandler.multipleImageClassificationMT1(files)
 
     if (mlObjectArray.length)
     {

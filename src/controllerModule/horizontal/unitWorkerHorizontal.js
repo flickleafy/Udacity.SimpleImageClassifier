@@ -2,7 +2,7 @@
 const storageModule = require('../../storageModule/storageInterface')
 const imageModule = require('../../imageModule/imageInterface')
 
-const unitWorkerHorizontal = async (fileObject, machineModule) =>
+const unitWorkerHorizontal = async (fileObject, imageClassifier) =>
 {
     let mlObject = null
     // Load local image from our resources
@@ -14,7 +14,7 @@ const unitWorkerHorizontal = async (fileObject, machineModule) =>
         image = await imageModule.cropSquare(image, fileObject)
 
         // Predict in what class our photo is
-        const predictions = await machineModule.classify(image)
+        const predictions = await imageClassifier.classify(image)
 
         // Release memory
         image = null

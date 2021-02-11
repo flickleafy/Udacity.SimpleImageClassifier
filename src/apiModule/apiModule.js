@@ -8,9 +8,7 @@ const dotenv = require('dotenv');
 
 const apiModule = {}
 
-apiModule.initialize = async (machineModuleHandler,
-    poolThreadsModuleHandler,
-    storageModuleHandler) =>
+apiModule.initialize = async (controllerModuleHandler) =>
 {
     // Read the file ".env"  
     dotenv.config();
@@ -19,9 +17,7 @@ apiModule.initialize = async (machineModuleHandler,
     api.use(cors());
     api.use(express.json());
 
-    api.locals.machineModuleHandler = machineModuleHandler
-    api.locals.poolThreadsModuleHandler = poolThreadsModuleHandler
-    api.locals.storageModuleHandler = storageModuleHandler
+    api.locals.controllerModuleHandler = controllerModuleHandler
 
     // Attach to React frontend
     api.use(express.static(path.join(__dirname, 'client/build')));
