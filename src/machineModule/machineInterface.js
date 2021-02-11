@@ -1,31 +1,11 @@
 const imageClassifier = require('./classifier/imageClassifier')
-const pipelineClassifierHorizontal = require('./classifier/pipelineClassifierHorizontal')
-const pipelineClassifierHorizontalMT = require('./classifier/pipelineClassifierHorizontalMT')
-const storageModule = require('../storageModule/storageInterface')
-const poolThreadsModule = require('../multithreadsModule/poolThreadsModule')
 
 const machineModule = {}
 
-imageClassifier.initialize(storageModule.pathTrainData, storageModule.pathTrainedModel)
-
-machineModule.singleImageClassification = (file) =>
+machineModule.initImageClassifier = (storageModule) =>
 {
-    return pipelineClassifierHorizontal.singleImageClassification(file, imageClassifier)
-}
-
-machineModule.multipleImageClassification = (files) =>
-{
-    return pipelineClassifierHorizontal.multipleImageClassification(files, imageClassifier)
-}
-
-
-machineModule.multipleImageClassificationMT1 = (files) =>
-{
-    return pipelineClassifierHorizontalMT.multipleImageClassificationMT1(files, poolThreadsModule.poolUnitWorkerHorizontal)
-}
-machineModule.multipleImageClassificationMT2 = (files) =>
-{
-    return pipelineClassifierHorizontalMT.multipleImageClassificationMT2(files, poolThreadsModule.poolUnitWorkerHorizontal)
+    imageClassifier.initialize(storageModule.pathTrainData, storageModule.pathTrainedModel)
+    return imageClassifier
 }
 
 module.exports = machineModule
