@@ -25,7 +25,7 @@ apiMachine.classifyMultipleImages = async (req, res) =>
     const controllerModuleHandler = req.app.locals.controllerModuleHandler
 
     const files = newFilesObjectArray(req.files)
-    const mlObjectArray = await controllerModuleHandler.multipleImageClassification(files)
+    const mlObjectArray = await controllerModuleHandler.multipleImageClassificationV(files)
     //const mlObjectArray = await controllerModuleHandler.multipleImageClassificationMT1(files)
 
     if (mlObjectArray.length)
