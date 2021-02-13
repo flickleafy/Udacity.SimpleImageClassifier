@@ -1,9 +1,6 @@
 // Simple example of machine learning, image classification
 
 const apiModule = require('./apiModule/apiModule')
-//const imageClassifier = require('./machineModule/imageClassifier')
-//const poolThreadsModule = require('./multithreadsModule/poolThreadsModule')
-//const storageModule = require('./storageModule/storageInterface')
 const controllerModule = require('./controllerModule/controllerInterface')
 
 const application = {}
