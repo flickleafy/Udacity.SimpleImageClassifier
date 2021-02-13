@@ -1,5 +1,6 @@
 
 const unitWorkerHorizontal = require('./unitWorkerHorizontal')
+const cronometer = require('../../util/cronometer')
 
 const pipelineClassifierHorizontal = {}
 
@@ -7,7 +8,11 @@ pipelineClassifierHorizontal.singleImageClassification = async (fileObject, imag
 {
     let mlObject = null
 
+    cronometer.start()
+
     mlObject = await unitWorkerHorizontal(fileObject, imageClassifier)
+
+    cronometer.leap("singleImageClassification")
 
     return mlObject
 }
@@ -18,7 +23,7 @@ pipelineClassifierHorizontal.multipleImageClassification = async (files, imageCl
 
     if (files)
     {
-        let start = Date.now();
+        cronometer.start()
 
         for (let index = 0; index < files.length; index++)
         {
@@ -27,9 +32,7 @@ pipelineClassifierHorizontal.multipleImageClassification = async (files, imageCl
             mlObjectArray.push(mlObject)
         }
 
-        let end = Date.now();
-        end = ((end - start) / 1000)
-        console.log(`Processing time: ${end}`)
+        cronometer.leap("multipleImageClassification")
     }
     return mlObjectArray
 }

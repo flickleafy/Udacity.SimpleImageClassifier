@@ -1,26 +1,26 @@
 
 const storageModule = require('../../storageModule/storageInterface')
 const imageModule = require('../../imageModule/imageInterface')
+const cronometer = require('../../util/cronometer')
 
 const pipelineClassifierVertical = {}
 
 pipelineClassifierVertical.multipleImageClassification = async (files, imageClassifier) =>
 {
-    let start = Date.now();
-
     let imageArray = [], preprocessedArray = [], classifiedArray = []
 
+    cronometer.start()
     imageArray = await loadImageData(files)
+    cronometer.leap("loadImageData")
 
     preprocessedArray = await preprocessImages(imageArray)
+    cronometer.leap("preprocessImages")
 
     classifiedArray = await classifyImages(preprocessedArray, files, imageClassifier)
+    cronometer.leap("classifyImages")
 
-    await printPredictions(files);
-
-    let end = Date.now();
-    end = ((end - start) / 1000)
-    console.log(`Processing time: ${end}`)
+    printPredictions(classifiedArray);
+    cronometer.leap("printPredictions\n")
 
     return classifiedArray
 }
@@ -88,19 +88,19 @@ const classifyImages = async (images, files, imageClassifier) =>
     return classifiedArray
 }
 
-const printPredictions = async (files) =>
+const printPredictions = (files) =>
 {
     if (files)
     {
         for (let index = 0; index < files.length; index++)
         {
-            const predictions = files[index];
-            if (predictions)
+            const object = files[index];
+            if (object.prediction)
             {
-                console.log("The predictions of the photo ", fileObject.originalName, " are: ");
-                for (let index = 0; index < predictions.length; index++)
+                console.log("The predictions of the photo ", object.fileName, " are: ");
+                for (let index = 0; index < object.prediction.length; index++)
                 {
-                    const prediction = predictions[index];
+                    const prediction = object.prediction[index];
                     console.log("class: ", prediction.className, "\nprobability: ", prediction.probability);
                 }
                 console.log("\n");
