@@ -1,9 +1,11 @@
-const tensorflow = require('@tensorflow/tfjs')// Load the binding (CPU computation)
-require('@tensorflow/tfjs-node-gpu');
+const tensorflow = require('@tensorflow/tfjs-node-gpu');// Load the binding (GPU computation)
+// require('@tensorflow/tfjs')
 
 const IMAGE_SIZE = 224;
 
 const tensorReshape = {}
+// let dataset = tensorflow.data.array([{ 'item': 1 }, { 'item': 2 }, { 'item': 3 }])
+// dataset.map().prefetch
 
 tensorReshape.expandDimension = (tensor) =>
 {

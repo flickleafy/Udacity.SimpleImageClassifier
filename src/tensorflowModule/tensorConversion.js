@@ -1,6 +1,5 @@
-
-const tensorflow = require('@tensorflow/tfjs')// Load the binding (CPU computation)
-require('@tensorflow/tfjs-node-gpu');
+const tensorflow = require('@tensorflow/tfjs-node-gpu');// Load the binding (GPU computation)
+// require('@tensorflow/tfjs')
 
 const tensorConversion = {}
 
