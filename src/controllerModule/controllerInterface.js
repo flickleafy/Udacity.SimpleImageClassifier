@@ -2,7 +2,7 @@ const machineModule = require('../machineModule/machineInterface')
 const storageModule = require('../storageModule/storageInterface')
 const imageClassifier = machineModule.initImageClassifier(storageModule)
 
-const poolThreadsModule = require('../multithreadsModule/poolThreadsModule')
+//const poolThreadsModule = require('../multithreadsModule/poolThreadsModule')
 
 const pipelineClassifierHorizontal = require('./horizontal/pipelineClassifierHorizontal')
 const pipelineClassifierHorizontalMT = require('./horizontal/pipelineClassifierHorizontalMT')
@@ -25,11 +25,11 @@ controllerModule.multipleImageClassification = (files) =>
 
 controllerModule.multipleImageClassificationMT1 = (files) =>
 {
-    return pipelineClassifierHorizontalMT.multipleImageClassificationMT1(files, poolThreadsModule.poolUnitWorkerHorizontal)
+    //return pipelineClassifierHorizontalMT.multipleImageClassificationMT1(files, poolThreadsModule.poolUnitWorkerHorizontal)
 }
 controllerModule.multipleImageClassificationMT2 = (files) =>
 {
-    return pipelineClassifierHorizontalMT.multipleImageClassificationMT2(files, poolThreadsModule.poolUnitWorkerHorizontal)
+    //return pipelineClassifierHorizontalMT.multipleImageClassificationMT2(files, poolThreadsModule.poolUnitWorkerHorizontal)
 }
 // Horizontal
 
