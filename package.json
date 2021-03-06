@@ -23,9 +23,8 @@
   },
   "homepage": "https://github.com/eerbano/Udacity.SimpleImageClassifier#readme",
   "dependencies": {
-    "@tensorflow-models/mobilenet": "^2.0.4",
-    "@tensorflow/tfjs": "^2.7.0",
-    "@tensorflow/tfjs-node-gpu": "^2.8.2",
+    "@tensorflow-models/mobilenet": "2.1.0",
+    "@tensorflow/tfjs-node-gpu": "2.8.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -37,7 +36,7 @@
     "sharp": "^0.27.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "2.0.7"
   },
   "nodemonConfig": {
     "ignore": [
