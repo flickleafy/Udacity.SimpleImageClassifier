@@ -128,3 +128,4 @@ multithreadsModule
 .DS_Store
 
 vscode-profile-2021-02-12-17-55-40.cpuprofile
+package-lock.json
