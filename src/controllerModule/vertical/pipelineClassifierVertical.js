@@ -11,16 +11,17 @@ pipelineClassifierVertical.multipleImageClassification = async (files, imageClas
 
     cronometer.start()
     imageArray = await loadImageData(files)
-    cronometer.leap("loadImageData")
+    cronometer.leap("1-loadImageData")
 
     preprocessedArray = await preprocessImages(imageArray)
-    cronometer.leap("preprocessImages")
+    cronometer.leap("2-preprocessImages")
 
     classifiedArray = await classifyImages(preprocessedArray, files, imageClassifier)
-    cronometer.leap("classifyImages")
+    cronometer.leap("3-classifyImages")
 
-    printPredictions(classifiedArray);
-    cronometer.leap("printPredictions\n")
+    console.info("\n\n")
+    // printPredictions(classifiedArray);
+    // cronometer.leap("printPredictions\n")
 
     return classifiedArray
 }

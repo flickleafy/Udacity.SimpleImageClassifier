@@ -8,7 +8,7 @@ const application = {}
 application.initialize = async () =>
 {
     //await imageClassifier.initialize(storageModule.pathTrainData, storageModule.pathTrainedModel)
-    await apiModule.initialize(controllerModule, null, null)
+    await apiModule.initialize(controllerModule)
 }
 
 application.initialize()

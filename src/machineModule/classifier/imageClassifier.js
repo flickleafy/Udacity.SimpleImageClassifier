@@ -7,6 +7,7 @@ let model
 let custom = 0
 
 const imageClassifier = {}
+
 imageClassifier.initialize = async (pathTrainData, pathTrainedModel) =>
 {
     let customModel = await customModelExist(pathTrainedModel);
