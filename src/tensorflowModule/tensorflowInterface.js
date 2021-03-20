@@ -12,4 +12,7 @@ tensorflowModule.imageTo3dTensor = tensorConversion.imageTo3dTensor
 tensorflowModule.loadModel = tensorIO.loadModel
 tensorflowModule.saveModel = tensorIO.saveModel
 
+tensorflowModule.normalizeAndReshapeImgTensor = tensorReshape.normalizeAndReshapeImgTensor
+tensorflowModule.expandDimension = tensorReshape.expandDimension
+
 module.exports = tensorflowModule
