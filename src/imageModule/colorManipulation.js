@@ -8,7 +8,7 @@ colorManipulation.averagePixelColorRGB = (image) =>
     if (image)
     {
         const numPixels = image.bitmap.width * image.bitmap.height;
-        pixels = image.bitmap.data
+        let pixels = image.bitmap.data
         //initialize with first pixel
         averageColor.r = pixels[red]
         averageColor.g = pixels[green]
@@ -49,12 +49,8 @@ colorManipulation.pixelColorRGBToHSLfp = (pixelRGB) =>
             saturation = 0,
             lightness = 0;
 
-        // calculate hue
-        // no difference
-        if (delta == 0)
-        { hue = 0; }
         // red is max
-        else if (channelMax == red)
+        if (channelMax == red)
         { hue = ((green - blue) / delta) % 6; }
         // green is max
         else if (channelMax == green)
@@ -75,7 +71,9 @@ colorManipulation.pixelColorRGBToHSLfp = (pixelRGB) =>
         // calculate saturation
         saturation = delta == 0 ? 0 : delta / (1 - Math.abs(2 * lightness - 1));
 
-        pixelHSL.h = hue, pixelHSL.s = saturation, pixelHSL.l = lightness
+        pixelHSL.h = hue
+        pixelHSL.s = saturation
+        pixelHSL.l = lightness
         return pixelHSL
     } else
     {

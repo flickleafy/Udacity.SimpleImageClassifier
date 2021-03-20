@@ -22,7 +22,7 @@ pipelineClassifierHorizontalMT.multipleImageClassificationMT1 = async (files, po
 
         let end = Date.now();
         end = ((end - start) / 1000)
-        console.log(`Processing time: ${end}`)
+        console.info(`Processing time: ${end}`)
         //await criticalSection1(files, poolThreadsHandler, mlObjectArray)
     }
     return mlObjectArray
@@ -61,7 +61,7 @@ pipelineClassifierHorizontalMT.multipleImageClassificationMT2 = async (files, po
 
         let end = Date.now();
         end = ((end - start) / 1000)
-        console.log(`Processing time: ${end}`)
+        console.info(`Processing time: ${end}`)
         // await criticalSection2(files, poolThreadsHandler, mlObjectArray)
     }
     return mlObjectArray

@@ -7,9 +7,9 @@ directoryConversion.filePathToURL = (filePath) =>
     const link = url.pathToFileURL(filePath)
     return link
 }
-directoryConversion.URLtoFilePath = (url) =>
+directoryConversion.URLtoFilePath = (link) =>
 {
-    const filePath = url.fileURLToPath(url)
+    const filePath = url.fileURLToPath(link)
     return filePath
 }
 

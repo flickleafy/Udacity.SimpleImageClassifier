@@ -93,15 +93,15 @@ const printPredictions = (files) =>
 {
     if (files)
     {
-        for (let index = 0; index < files.length; index++)
+        for (let i = 0; i < files.length; i++)
         {
-            const object = files[index];
+            const object = files[i];
             if (object.prediction)
             {
                 console.log("The predictions of the photo ", object.fileName, " are: ");
-                for (let index = 0; index < object.prediction.length; index++)
+                for (let j = 0; j < object.prediction.length; j++)
                 {
-                    const prediction = object.prediction[index];
+                    const prediction = object.prediction[j];
                     console.log("class: ", prediction.className, "\nprobability: ", prediction.probability);
                 }
                 console.log("\n");
