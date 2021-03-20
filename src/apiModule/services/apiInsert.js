@@ -1,14 +1,14 @@
-const apiModel = require('../model/apiModel');
-const helper = require('./apiHelpers')
+const helpers = require('./helpers')
 
 const apiInsert = {}
 
 apiInsert.insertTransaction = async (req, res) =>
 {
+    const dbModel = req.app.locals.controllerModuleHandler.dbModel
     try
     {//
-        let newTransactionJSON = helper.newTransaction(req.body);
-        const transaction = new apiModel(newTransactionJSON);
+        let newTransactionJSON = helpers.newTransaction(req.body);
+        const transaction = new dbModel(newTransactionJSON);
         await transaction.save();
         res.send(transaction);
         //

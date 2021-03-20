@@ -1,13 +1,13 @@
-const apiModel = require('../model/apiModel');
-
 const apiDelete = {}
 
 apiDelete.deleteTransactionById = async (req, res) =>
 {
     const id = req.params.id;
+    const dbModel = req.app.locals.controllerModuleHandler.dbModel
+
     try
     {//
-        const transaction = await apiModel.findByIdAndDelete(id);
+        const transaction = await dbModel.findByIdAndDelete(id);
         if (!transaction)
         {
             return res.status(404).send({ message: 'Transaction não encontrada' });
@@ -26,6 +26,8 @@ apiDelete.deleteTransactionById = async (req, res) =>
 apiDelete.removeAllTransactionsInPeriod = async (req, res) =>
 {
     const period = req.query.period;
+    const dbModel = req.app.locals.controllerModuleHandler.dbModel
+
     //condicao para o filtro no findAll
     let filter = period ? { name: { $regex: new RegExp(period), $options: 'i' } } : {};
     try
