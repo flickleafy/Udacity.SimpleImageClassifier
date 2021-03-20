@@ -45,4 +45,6 @@ controllerModule.multipleImageClassificationV = (files) =>
 }
 // Vertical
 
+controllerModule.dbModel = storageModule.dbModel
+
 module.exports = controllerModule

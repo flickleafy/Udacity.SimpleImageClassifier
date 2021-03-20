@@ -12,6 +12,7 @@ let schema = mongoose.Schema({
   type: String,
 });
 
-const apiModel = mongoose.model('transaction', schema);
+const dbModel = mongoose.model('transaction', schema);
 
-module.exports = apiModel;
+module.exports = dbModel;
+

@@ -2,6 +2,7 @@
 const directoryListing = require('./directoryListing')
 const directoryConversion = require('./directoryConversion')
 const fileLoader = require('./fileLoader')
+const dbInterface = require('./mongodb/dbInterface')
 
 const storageModule = {}
 
@@ -18,5 +19,8 @@ storageModule.URLtoFilePath = directoryConversion.URLtoFilePath
 
 storageModule.loadJSON = fileLoader.loadJSON
 storageModule.getImage = fileLoader.getImage
+
+storageModule.dbModel = dbInterface.dbModel
+storageModule.dbConnector = dbInterface.dbConnector
 
 module.exports = storageModule
