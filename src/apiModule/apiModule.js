@@ -1,7 +1,6 @@
 
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const routes = require('./routes/routes');
 const path = require('path');
 const dotenv = require('dotenv');
@@ -31,37 +30,11 @@ apiModule.initialize = async (controllerModuleHandler) =>
     // Main app routes
     api.use('/api/', routes);
 
-    // Data base connection 
-    const { DB_CONNECTION } = process.env;
-
-    console.log('Starting connection to MongoDB...');
-    mongoose.connect(
-        DB_CONNECTION,
-        { useNewUrlParser: true, useUnifiedTopology: true, },
-        (err) =>
-        {
-            if (err)
-            {
-                connectedToMongoDB = false;
-                console.error(`MongoDB connection error: ${err}`);
-            }
-        }
-    );
-
-    const { connection } = mongoose;
-
-    connection.once('open', () =>
+    // Port definition and API initializing  
+    const APP_PORT = process.env.PORT || 3001;
+    api.listen(APP_PORT, () =>
     {
-        connectedToMongoDB = true;
-        console.log('Connection to MongoDB');
-
-        // Port definition and API initializing   
-        const APP_PORT = process.env.PORT || 3001;
-        api.listen(APP_PORT, () =>
-        {
-            console.log(`Microservice initialized at port ${APP_PORT}`);
-        });
-
+        console.log(`Microservice initialized at port ${APP_PORT}`);
     });
 
 }
